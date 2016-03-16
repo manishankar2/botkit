@@ -22,5 +22,36 @@ testbot.controller.hears('channels', 'direct_message', function(bot, message){
 	});
 });
 
+testbot.hears(['shutdown'],'direct_message,direct_mention',function(bot, message) {
+
+	if (message.user == 'U0KGP8R8X'){
+		bot.startConversation(message,function(err, convo) {
+
+		    convo.ask('Are you sure you want me to shutdown?',[
+		        {
+		            pattern: bot.utterances.yes,
+		            callback: function(response, convo) {
+		                convo.say('Bye!');
+		                convo.next();
+		                setTimeout(function() {
+		                    process.exit();
+		                },3000);
+		            }
+		        },
+		    {
+		        pattern: bot.utterances.no,
+		        default: true,
+		        callback: function(response, convo) {
+		            convo.say('*Phew!*');
+		            convo.next();
+		        }
+		    }
+		    ]);
+		});
+	}else{
+		bot.reply(message, 'Nah !! You cant do that. But I wont disturb you.');
+	}
+});
+
 
 module.exports = testbot;

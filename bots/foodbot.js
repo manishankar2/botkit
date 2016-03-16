@@ -37,6 +37,37 @@ foodbot.controller.hears(['breakfast','lunch', 'snacks', 'dinner'], 'direct_mess
 	});
 });
 
+foodbot.hears(['shutdown'],'direct_message,direct_mention',function(bot, message) {
+
+	if (message.user == 'U0KGP8R8X'){
+		bot.startConversation(message,function(err, convo) {
+
+		    convo.ask('Are you sure you want me to shutdown?',[
+		        {
+		            pattern: bot.utterances.yes,
+		            callback: function(response, convo) {
+		                convo.say('Bye!');
+		                convo.next();
+		                setTimeout(function() {
+		                    process.exit();
+		                },3000);
+		            }
+		        },
+		    {
+		        pattern: bot.utterances.no,
+		        default: true,
+		        callback: function(response, convo) {
+		            convo.say('*Phew!*');
+		            convo.next();
+		        }
+		    }
+		    ]);
+		});
+	}else{
+		bot.reply(message, 'Nah !! You cant do that. But I wont disturb you.');
+	}
+});
+
 postMenu = function(response, convo){
 	convo.say('Hi !!');
 	convo.ask('What Menu do you want me to post ?',checkMenu);
@@ -87,7 +118,7 @@ checkMenu = function(response, convo){
 
 publishMenu = function(menu ,response, convo){
 	convo.say('please post the menu for ' + menu);
-	convo.say('say done to complete posting');
+	convo.say('say done after posting the menu');
 	menu_items = []
 	convo.ask('', function(response, convo){
 		if (response.text.toLowerCase() == 'done'){
