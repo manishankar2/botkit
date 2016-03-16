@@ -37,7 +37,7 @@ foodbot.controller.hears(['breakfast','lunch', 'snacks', 'dinner'], 'direct_mess
 	});
 });
 
-foodbot.hears(['shutdown'],'direct_message,direct_mention',function(bot, message) {
+foodbot.controller.hears(['shutdown'],'direct_message,direct_mention',function(bot, message) {
 
 	if (message.user == 'U0KGP8R8X'){
 		bot.startConversation(message,function(err, convo) {

@@ -22,7 +22,7 @@ testbot.controller.hears('channels', 'direct_message', function(bot, message){
 	});
 });
 
-testbot.hears(['shutdown'],'direct_message,direct_mention',function(bot, message) {
+testbot.controller.hears(['shutdown'],'direct_message,direct_mention',function(bot, message) {
 
 	if (message.user == 'U0KGP8R8X'){
 		bot.startConversation(message,function(err, convo) {
