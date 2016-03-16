@@ -1,8 +1,12 @@
 var request = require('request');
+var config = require('./../config')
+
+var baseurl = config.apiurl;
+
 
 var getmenuitem = function(menuitem, callback){
 	 var output;
-	 request('http://127.0.0.1:3002/foodbot?item=' + menuitem, function (error, response, body) {
+	 request(baseurl + '/foodbot?item=' + menuitem, function (error, response, body) {
 	    if (!error && response.statusCode == 200) {
 	    	var menu =JSON.parse(body);
 	        output = menu.output;
@@ -12,7 +16,9 @@ var getmenuitem = function(menuitem, callback){
 };
 
 var getmenulist = function(callback){
-	request('http://127.0.0.1:3002/menus', function(error, response, body){
+	console.log('&&&&&&&');
+	console.log(baseurl);
+	request(baseurl + '/menus', function(error, response, body){
 		if (!error && response.statusCode == 200){
 			var menulist = JSON.parse(body);
 			callback(error, menulist);
@@ -21,7 +27,7 @@ var getmenulist = function(callback){
 };
 
 var postmenu = function(menu,items,callback){
-	request.post('http://127.0.0.1:3002/foodbot', {json: {'menu' : menu , 'items' : items}}, function(error, response, body){
+	request.post(baseurl + '/foodbot', {json: {'menu' : menu , 'items' : items}}, function(error, response, body){
 		if (!error && response.statusCode == 200){
 			callback(error, body);
 		}

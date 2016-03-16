@@ -14,4 +14,6 @@ botfiles = fs.getdirfiles(config.bots.botfullpath)
 
 config.bots.botfiles = botfiles ;
 
-module.exports = config
+config.apiurl = process.env.url;
+
+module.exports = config;
