@@ -1,12 +1,14 @@
 var botproto = require('./../bot_class.js')
 
-var api = require('./../apis/foodbot_api')
+var foodapi = require('./../apis/foodbot_api')
 
 var name = 'foodpanda';
 
 var token = "xoxb-23902359414-3MMsm1YoozWVge37pRudF1fY"
 
 var foodbot = new botproto(name, token);
+
+var api = foodapi();
 
 /* POST MENU FLOW */
 foodbot.controller.hears(['post menu'], 'direct_message,direct_mention', function(bot, message){
@@ -22,7 +24,7 @@ foodbot.controller.hears(['hi', 'hello', 'hey' ,'help'],'direct_message,direct_m
 });
 
 foodbot.controller.hears(['breakfast','lunch', 'snacks', 'dinner'], 'direct_message,direct_mention',function(bot, message){
-	api.getmenuitem(message.text, function(err, resp){
+	api.menu.getmenuitem(message.text, function(err, resp){
 		if (err){
 			console.log(err);
 			bot.reply(' I dont have the menu now !! please check after sometime');
@@ -77,7 +79,7 @@ postMenu = function(response, convo){
 
 checkMenu = function(response, convo){
 	var menu;
-	api.getmenulist(function(err, res){
+	api.menu.getmenulist(function(err, res){
 		if (err){
 			console.log(err);
 		}else{
@@ -123,7 +125,7 @@ publishMenu = function(menu ,response, convo){
 	convo.ask('', function(response, convo){
 		if (response.text.toLowerCase() == 'done'){
 			menu_items = menu_items.join('\n');
-			api.postmenu(menu, menu_items, function(err, response){
+			api.menu.postmenu(menu, menu_items, function(err, response){
 				if (err){
 					console.log(err);
 				}
@@ -138,7 +140,7 @@ publishMenu = function(menu ,response, convo){
 
 menu = function(response,convo){
 	convo.say('I will let you know the menus of the day');
-	api.getmenulist(function(err, res){
+	api.menu.getmenulist(function(err, res){
 		if (err){
 			console.log(err);
 		}else{
