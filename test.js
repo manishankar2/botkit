@@ -1,3 +1,3 @@
-var testbot =  require('./bots/testbot');
+var testbot =  require('./test/testbot');
 
 testbot.bot.startRTM();
