@@ -16,4 +16,8 @@ config.bots.botfiles = botfiles ;
 
 config.apiurl = process.env.url;
 
+config.bots.foodbot = {}
+
+config.bots.foodbot.admin_users = ['U0KGP8R8X', 'U0K4NQDPV', 'U0KKGF9GB', 'U0K4SMVRT', 'U0KFXPJKB', 'U0KGCNRPC']
+
 module.exports = config;

@@ -10,6 +10,10 @@ var foodbot = new botproto(name, token);
 
 var api = foodapi();
 
+var config = require('./../config.js');
+
+var foodbot_config = config.bots.foodbot
+
 foodbot.controller.hears(['hi','hello', 'hey','help'],'direct_message,direct_mention,mention',function(bot, message){
 	bot.api.reactions.add({
 	    timestamp: message.ts,
@@ -41,9 +45,18 @@ foodbot.controller.hears('menu list','direct_message,direct_mention',function(bo
 	bot.startConversation(message,menu)
 });
 
+allow_post = function(user_id){
+	console.log('is_admin ' + user_id);
+	if (foodbot_config.admin_users.indexOf(user_id) > -1)
+		return true;
+	else
+		return false;
+}
+
 foodbot.controller.hears(['post menu'], 'direct_message,direct_mention', function(bot, message){
 	//Validations based on user id
-	if (message.user == 'U0KGP8R8X'){
+	is_admin = allow_post(message.user)
+	if (is_admin){
 		bot.startConversation(message,postMenu);
 	}
 });

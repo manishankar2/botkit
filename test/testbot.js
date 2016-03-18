@@ -6,9 +6,22 @@ var token = "xoxb-24392860727-AdkkueajeBp8m4SNXugGIn9w"
 
 var testbot = new botproto(name, token);
 
+var config = require('./../config.js');
 
+var foodbot_config = config.bots.foodbot
+
+allow_post = function(user_id){
+	console.log('is_admin ' + user_id);
+	console.log(foodbot_config.admin_users);
+	if (foodbot_config.admin_users.indexOf(user_id) > -1)
+		return true;
+	else
+		return false;
+}
 
 testbot.controller.hears(['hi','hello', 'hey'],'direct_message,direct_mention,mention',function(bot, message){
+	is_admin = allow_post(message.user);
+	console.log(is_admin);
 	bot.api.reactions.add({
 	    timestamp: message.ts,
 	    channel: message.channel,
