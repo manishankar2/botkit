@@ -1,11 +1,3 @@
-var foodapi = require('./apis/foodbotapi2.js');
-var api = foodapi();
+var testbot =  require('./bots/testbot');
 
-
-api.foodbot.getmenuitem('breakfast',function(err, response){
-	if (err){
-		console.log(err);
-	}else{
-		console.log(response);
-	}
-});
+testbot.bot.startRTM();

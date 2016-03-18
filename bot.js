@@ -64,10 +64,6 @@ This bot demonstrates many of the core features of Botkit:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 
-if (!process.env.token) {
-    console.log('Error: Specify token in environment');
-    process.exit(1);
-}
 
 var Botkit = require('./lib/Botkit.js');
 var os = require('os');
@@ -77,7 +73,7 @@ var controller = Botkit.slackbot({
 });
 
 var bot = controller.spawn({
-    token: process.env.token
+    token: 'xoxb-24392860727-AdkkueajeBp8m4SNXugGIn9w'
 }).startRTM();
 
 
@@ -86,7 +82,7 @@ controller.hears(['hello','hi'],'direct_message,direct_mention,mention',function
     bot.api.reactions.add({
         timestamp: message.ts,
         channel: message.channel,
-        name: 'robot_face',
+        name: 'panda_face',
     },function(err, res) {
         if (err) {
             bot.botkit.log('Failed to add emoji reaction :(',err);

@@ -10,17 +10,42 @@ var foodbot = new botproto(name, token);
 
 var api = foodapi();
 
-/* POST MENU FLOW */
+foodbot.controller.hears(['hi','hello', 'hey','help'],'direct_message,direct_mention,mention',function(bot, message){
+	bot.api.reactions.add({
+	    timestamp: message.ts,
+	    channel: message.channel,
+	    name: 'panda_face',
+	},function(err, res) {
+	    if (err) {
+	        bot.botkit.log('Failed to add emoji reaction :(',err);
+	    }
+	});
+	bot.startConversation(message, function(response, convo){
+		bot.api.users.info({user : message.user}, function(err, response){
+			if(err){
+				console.log(err);
+			}else{
+				if (response.user){
+					user = response.user
+				}
+			}
+			if (user){
+				convo.say('hello ' + user.name + ' :nerd_face:');
+			}
+			convo.say('lets get started. type *menu list* to know the list of menus I can offer');
+		});
+	});
+});
+
+foodbot.controller.hears('menu list','direct_message,direct_mention',function(bot,message){
+	bot.startConversation(message,menu)
+});
+
 foodbot.controller.hears(['post menu'], 'direct_message,direct_mention', function(bot, message){
 	//Validations based on user id
 	if (message.user == 'U0KGP8R8X'){
 		bot.startConversation(message,postMenu);
 	}
-});
-
-foodbot.controller.hears(['hi', 'hello', 'hey' ,'help'],'direct_message,direct_mention',function(bot, message) {
-	bot.reply(message, 'Hi Hello!!');
-	bot.startConversation(message, menu);
 });
 
 foodbot.controller.hears(['breakfast','lunch', 'snacks', 'dinner'], 'direct_message,direct_mention',function(bot, message){
@@ -32,6 +57,15 @@ foodbot.controller.hears(['breakfast','lunch', 'snacks', 'dinner'], 'direct_mess
 			console.log(resp);
 			if (resp){
 				bot.reply(message,resp);
+				bot.api.reactions.add({
+				    timestamp: message.ts,
+				    channel: message.channel,
+				    name: 'yum_face',
+				},function(err, res) {
+				    if (err) {
+				        bot.botkit.log('Failed to add emoji reaction :(',err);
+				    }
+				});
 			}else{
 				bot.reply(message, 'I dont have the menu now !! please check after sometime');
 			}
@@ -139,14 +173,13 @@ publishMenu = function(menu ,response, convo){
 };
 
 menu = function(response,convo){
-	convo.say('I will let you know the menus of the day');
 	api.menu.getmenulist(function(err, res){
 		if (err){
 			console.log(err);
 		}else{
 			menulist = res.menu;
-			convo.say('Type the Following command to get the items for each menu ');
-			convo.say(menulist.join('\n'));
+			convo.say('Type the Following command to get the items for each menu');
+			convo.say('*' + menulist.join('*\n*') + '*');
 			convo.next();
 		}
 	});

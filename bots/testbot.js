@@ -6,9 +6,37 @@ var token = "xoxb-24392860727-AdkkueajeBp8m4SNXugGIn9w"
 
 var testbot = new botproto(name, token);
 
-testbot.controller.hears(['hello'],'direct_message,direct_mention,mention',function(bot, message) {
-	bot.reply(message,"hi");
-	
+
+
+testbot.controller.hears(['hi','hello', 'hey'],'direct_message,direct_mention,mention',function(bot, message){
+	bot.api.reactions.add({
+	    timestamp: message.ts,
+	    channel: message.channel,
+	    name: 'panda_face',
+	},function(err, res) {
+	    if (err) {
+	        bot.botkit.log('Failed to add emoji reaction :(',err);
+	    }
+	});
+	bot.startConversation(message, function(response, convo){
+		bot.api.users.info({user : message.user}, function(err, response){
+			if(err){
+				console.log(err);
+			}else{
+				if (response.user){
+					user = response.user
+				}
+			}
+			if (user){
+				convo.say('hello ' + user.name + ' :nerd_face:');
+			}
+			convo.say('lets get started. type *menu list* to know the list of menus i can offer');
+		});
+	});
+});
+
+testbot.controller.hears(['menu list'], 'direct_message,direct_mention',function(bot,message){
+
 });
 
 testbot.controller.hears('channels', 'direct_message', function(bot, message){
