@@ -71,18 +71,9 @@ foodbot.controller.hears(['breakfast','lunch', 'snacks', 'dinner', 'break fast']
 			console.log(err);
 			bot.reply(' I dont have the menu now !! please check after sometime');
 		}else{
-			console.log(resp);
+			resp = resp + ' :yum:'
 			if (resp){
-				bot.reply(message,resp);
-				bot.api.reactions.add({
-				    timestamp: message.ts,
-				    channel: message.channel,
-				    name: 'yum_face',
-				},function(err, res) {
-				    if (err) {
-				        bot.botkit.log('Failed to add emoji reaction :(',err);
-				    }
-				});
+				bot.reply(message,resp)
 			}else{
 				bot.reply(message, 'I dont have the menu now !! please check after sometime');
 			}
