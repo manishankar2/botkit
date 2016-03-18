@@ -35,10 +35,6 @@ testbot.controller.hears(['hi','hello', 'hey'],'direct_message,direct_mention,me
 	});
 });
 
-testbot.controller.hears(['menu list'], 'direct_message,direct_mention',function(bot,message){
-
-});
-
 testbot.controller.hears('channels', 'direct_message', function(bot, message){
 	var channels = [];
 	bot.api.channels.list({}, function(err, response){

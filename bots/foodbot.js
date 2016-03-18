@@ -48,8 +48,12 @@ foodbot.controller.hears(['post menu'], 'direct_message,direct_mention', functio
 	}
 });
 
-foodbot.controller.hears(['breakfast','lunch', 'snacks', 'dinner'], 'direct_message,direct_mention',function(bot, message){
-	api.menu.getmenuitem(message.text, function(err, resp){
+foodbot.controller.hears(['breakfast','lunch', 'snacks', 'dinner', 'break fast'], 'direct_message,direct_mention',function(bot, message){
+	keyword = message.text.toLowerCase();
+	if (keyword == 'break fast'){
+		keyword = 'breakfast'
+	}
+	api.menu.getmenuitem(keyword, function(err, resp){
 		if (err){
 			console.log(err);
 			bot.reply(' I dont have the menu now !! please check after sometime');
