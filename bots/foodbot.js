@@ -45,19 +45,13 @@ foodbot.controller.hears('menu list','direct_message,direct_mention',function(bo
 	bot.startConversation(message,menu)
 });
 
-allow_post = function(user_id){
-	console.log('is_admin ' + user_id);
-	if (foodbot_config.admin_users.indexOf(user_id) > -1)
-		return true;
-	else
-		return false;
-}
-
 foodbot.controller.hears(['post menu'], 'direct_message,direct_mention', function(bot, message){
 	//Validations based on user id
 	is_admin = allow_post(message.user)
 	if (is_admin){
 		bot.startConversation(message,postMenu);
+	}else{
+		bot.startConversation(message,magicWord);
 	}
 });
 
@@ -111,6 +105,25 @@ foodbot.controller.hears(['shutdown'],'direct_message,direct_mention',function(b
 		bot.reply(message, 'Nah !! You cant do that. But I wont disturb you.');
 	}
 });
+
+allow_post = function(user_id){
+	console.log('is_admin ' + user_id);
+	if (foodbot_config.admin_users.indexOf(user_id) > -1)
+		return true;
+	else
+		return false;
+};
+
+magicWord = function(response,convo){
+	convo.ask('please enter the magic word', function(resp,convo){
+		if (resp.text == 'abracadabra'){
+			postMenu(response,convo);
+		}else{
+			convo.say('Nah !! you are not allowed to do that!!!');
+		}
+	});
+	convo.next();
+}
 
 postMenu = function(response, convo){
 	convo.say('Hi !!');
