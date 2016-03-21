@@ -14,6 +14,8 @@ var config = require('./../config.js');
 
 var foodbot_config = config.bots.foodbot
 
+var util = require('util');
+
 foodbot.controller.hears(['hi','hello', 'hey','help'],'direct_message,direct_mention,mention',function(bot, message){
 	bot.api.reactions.add({
 	    timestamp: message.ts,
@@ -27,7 +29,7 @@ foodbot.controller.hears(['hi','hello', 'hey','help'],'direct_message,direct_men
 	bot.startConversation(message, function(response, convo){
 		bot.api.users.info({user : message.user}, function(err, response){
 			if(err){
-				console.log(err);
+				util.log(err);
 			}else{
 				if (response.user){
 					user = response.user
@@ -62,7 +64,7 @@ foodbot.controller.hears(['breakfast','lunch', 'snacks', 'dinner', 'break fast']
 	}
 	api.menu.getmenuitem(keyword, function(err, resp){
 		if (err){
-			console.log(err);
+			util.log(err);
 			bot.reply(' I dont have the menu now !! please check after sometime');
 		}else{
 			resp = resp + ' :yum:'
@@ -107,7 +109,7 @@ foodbot.controller.hears(['shutdown'],'direct_message,direct_mention',function(b
 });
 
 allow_post = function(user_id){
-	console.log('is_admin ' + user_id);
+	util.log('is_admin ' + user_id);
 	if (foodbot_config.admin_users.indexOf(user_id) > -1)
 		return true;
 	else
@@ -117,12 +119,12 @@ allow_post = function(user_id){
 magicWord = function(response,convo){
 	convo.ask('please enter the magic word', function(resp,convo){
 		if (resp.text == 'abracadabra'){
-			postMenu(response,convo);
+			postMenu(resp,convo);
 		}else{
 			convo.say('Nah !! you are not allowed to do that!!!');
+			convo.next();
 		}
 	});
-	convo.next();
 }
 
 postMenu = function(response, convo){
@@ -136,7 +138,7 @@ checkMenu = function(response, convo){
 	var menu;
 	api.menu.getmenulist(function(err, res){
 		if (err){
-			console.log(err);
+			util.log(err);
 		}else{
 			ip_menu = response.text.toLowerCase()
 			menu = res.menu
@@ -182,7 +184,7 @@ publishMenu = function(menu ,response, convo){
 			menu_items = menu_items.join('\n');
 			api.menu.postmenu(menu, menu_items, function(err, response){
 				if (err){
-					console.log(err);
+					util.log(err);
 				}
 			});
 			convo.say('okay got it !!');
@@ -196,7 +198,7 @@ publishMenu = function(menu ,response, convo){
 menu = function(response,convo){
 	api.menu.getmenulist(function(err, res){
 		if (err){
-			console.log(err);
+			util.log(err);
 		}else{
 			menulist = res.menu;
 			convo.say('Type the Following command to get the items for each menu');

@@ -2,6 +2,7 @@ var request = require('request');
 var config = require('./../config')
 
 var baseurl = config.apiurl;
+var util = require('util');
 
 module.exports = function(){
 	var api = {
@@ -13,6 +14,8 @@ module.exports = function(){
 				    	var menu =JSON.parse(body);
 				        output = menu.output;
 				        callback(error, output);
+				     }else{
+				     	util.log(error);
 				     }
 				});
 			} , 
@@ -21,6 +24,8 @@ module.exports = function(){
 					if (!error && response.statusCode == 200){
 						var menulist = JSON.parse(body);
 						callback(error, menulist);
+					}else{
+						util.log(error);
 					}
 				});
 			} , 
@@ -28,6 +33,8 @@ module.exports = function(){
 				request.post(baseurl + '/foodbot', {json: {'menu' : menu , 'items' : items}}, function(error, response, body){
 					if (!error && response.statusCode == 200){
 						callback(error, body);
+					}else{
+						util.log(error);
 					}
 				});
 			} ,

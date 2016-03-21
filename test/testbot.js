@@ -19,8 +19,26 @@ allow_post = function(user_id){
 		return false;
 }
 
+magicWord = function(response,convo){
+	convo.ask('please enter the magic word', function(resp,convo){
+		console.log(resp);
+		if (resp.text == 'abracadabra'){
+			postMenu(resp,convo);
+		}else{
+			convo.say('Nah !! you are not allowed to do that!!!');
+		}
+	});
+	convo.next();
+}
+
 testbot.controller.hears(['hi','hello', 'hey'],'direct_message,direct_mention,mention',function(bot, message){
 	is_admin = allow_post(message.user);
+
+	if (is_admin){
+		console.log(is_admin);
+	}else{
+		bot.startConversation(message,magicWord);
+	}
 	console.log(is_admin);
 	bot.api.reactions.add({
 	    timestamp: message.ts,
