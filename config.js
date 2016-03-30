@@ -14,7 +14,7 @@ botfiles = fs.getdirfiles(config.bots.botfullpath)
 
 config.bots.botfiles = botfiles ;
 
-config.apiurl = process.env.url;
+config.apiurl = 'https://fresh-slack-bot.herokuapp.com';
 
 config.bots.foodbot = {}
 

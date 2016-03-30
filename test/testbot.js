@@ -10,6 +10,32 @@ var config = require('./../config.js');
 
 var foodbot_config = config.bots.foodbot
 
+
+testbot.controller.on('channel_rename', function(bot,message){
+	console.log(bot);
+	console.log(message);
+});
+
+testbot.controller.on('channel_created', function(bot,message){
+	console.log(bot);
+	console.log(message);
+});
+
+testbot.controller.on('channel_deleted', function(bot,message){
+	console.log(bot);
+	console.log(message);
+});
+
+testbot.controller.on('channel_archive', function(bot,message){
+	console.log(bot);
+	console.log(message);
+});
+
+testbot.controller.on('channel_unarchive', function(bot,message){
+	console.log(bot);
+	console.log(message);
+});
+
 allow_post = function(user_id){
 	console.log('is_admin ' + user_id);
 	console.log(foodbot_config.admin_users);
@@ -32,6 +58,22 @@ magicWord = function(response,convo){
 }
 
 testbot.controller.hears(['hi','hello', 'hey'],'direct_message,direct_mention,mention',function(bot, message){
+
+	bot.api.chat.postMessage({as_user: true, text: 'hi', channel: '@everyone'},function(err,resp){
+		if(err)
+			console.log(err);
+		else
+			console.log(resp);
+	});
+	/*
+
+	bot.identifyBot(function(err,identity){
+		if (err){
+			console.log(err);
+		}else{
+			console.log(identity);
+		}
+	});
 	is_admin = allow_post(message.user);
 
 	if (is_admin){
@@ -64,6 +106,7 @@ testbot.controller.hears(['hi','hello', 'hey'],'direct_message,direct_mention,me
 			convo.say('lets get started. type *menu list* to know the list of menus i can offer');
 		});
 	});
+*/
 });
 
 testbot.controller.hears('channels', 'direct_message', function(bot, message){
